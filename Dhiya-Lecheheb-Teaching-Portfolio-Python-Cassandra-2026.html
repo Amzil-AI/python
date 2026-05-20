@@ -143,6 +143,13 @@ body[data-lang="en"] .en-review{display:none}
 .panel p,.panel li{font-size:.88rem;color:var(--muted)}
 .panel ul{margin:.4rem 0 .4rem 1.1rem;display:grid;gap:.3rem}
 .panel .sub{font-family:"Space Mono",monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:.65rem 0 .35rem}
+.pedagogy-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.85rem}
+.ped-block{border:1px solid var(--line);border-radius:var(--radius);padding:1rem 1.1rem;background:rgba(15,26,20,.72)}
+.ped-block h4{font-size:.95rem;margin-bottom:.45rem;color:var(--txt)}
+.ped-block p,.ped-block li{font-size:.88rem;color:var(--muted);line-height:1.6}
+.ped-block ul{margin:.35rem 0 0 1.1rem;display:grid;gap:.28rem}
+.ped-block p strong,.ped-block li strong{color:var(--txt)}
+.ped-block.wide{grid-column:1/-1}
 .chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.45rem}
 .chip{font-family:"Space Mono",monospace;font-size:.6rem;padding:.22rem .48rem;border-radius:6px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--muted)}
 .exp-grid{display:grid;gap:.75rem}
@@ -185,7 +192,7 @@ body[data-lang="en"] .en-review{display:none}
 .mcq-sample ol{padding-left:1.2rem;color:var(--muted);font-size:.85rem;display:grid;gap:.4rem}
 footer{border-top:1px solid var(--line);padding:2rem 0 3rem;color:var(--dim);font-size:.88rem}
 @media(max-width:860px){
-  .hero-grid,.grid.three,.grid.two,.stats,.about-grid{grid-template-columns:1fr}
+  .hero-grid,.grid.three,.grid.two,.stats,.about-grid,.pedagogy-grid{grid-template-columns:1fr}
   .section-head{display:block}
   .ctl-row{flex-direction:column;min-width:0}
   .ctl-step{border-left:3px solid var(--line);padding-left:.85rem;margin-left:.1rem}
@@ -205,6 +212,8 @@ footer{border-top:1px solid var(--line);padding:2rem 0 3rem;color:var(--dim);fon
       <nav class="links" aria-label="Sections">
         <a href="#about-dhiya" class="fr-only">À propos</a>
         <a href="#about-dhiya" class="en-only">About</a>
+        <a href="#pedagogy" class="fr-only">Pédagogie</a>
+        <a href="#pedagogy" class="en-only">Pedagogy</a>
         <a href="#programme" class="fr-only">Programme</a>
         <a href="#programme" class="en-only">Syllabus</a>
         <a href="#structure" class="fr-only">Structure</a>
@@ -434,6 +443,58 @@ footer{border-top:1px solid var(--line);padding:2rem 0 3rem;color:var(--dim);fon
               <span class="fr-only"> · </span><span class="en-only"> · </span>
               <a href="Dhiya-Lecheheb-Teaching-Portfolio-Deployment-ML-2026.html">ML Deployment</a>
             </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="pedagogy">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="fr-only">Approche pédagogique</h2>
+          <h2 class="en-only">Pedagogical approach</h2>
+          <p class="fr-only">Comment Dhiya structure l'apprentissage pour ce module — au-delà du transfert de contenu.</p>
+          <p class="en-only">How Dhiya structures learning for this module — beyond content delivery.</p>
+        </div>
+
+        <div class="pedagogy-grid">
+          <article class="ped-block">
+            <h4 class="fr-only">Apprentissage par l'action &amp; défense orale</h4>
+            <h4 class="en-only">Learning by doing &amp; oral defense</h4>
+            <p class="fr-only">Chaque séquence combine <strong>cours structuré</strong>, <strong>TP sur dépôts réels</strong> (Django, FastAPI, Cassandra) et <strong>QCM</strong> pour ancrer les concepts. Les apprenants présentent et défendent leurs choix (MVC, framework web, modèle CQL) devant le groupe — la clarté de l'argument compte autant que le code.</p>
+            <p class="en-only">Each sequence blends <strong>structured teaching</strong>, <strong>labs on real repos</strong> (Django, FastAPI, Cassandra), and <strong>MCQs</strong> to lock in concepts. Learners present and defend their choices (MVC, web framework, CQL model) in front of peers — clarity of argument matters as much as code.</p>
+          </article>
+          <article class="ped-block">
+            <h4 class="fr-only">IA comme outil, pas comme béquille</h4>
+            <h4 class="en-only">AI as a tool, not a crutch</h4>
+            <p class="fr-only">L'assistance IA est acceptée pour la recherche et le prototypage, à condition que l'apprenant <strong>explique, critique et étende</strong> les sorties — en particulier sur le projet d'expertise et les revues de code.</p>
+            <p class="en-only">AI assistance is welcome for research and prototyping, provided learners <strong>explain, critique, and extend</strong> outputs — especially on the capstone and code reviews.</p>
+          </article>
+          <article class="ped-block">
+            <h4 class="fr-only">Ancrage industriel</h4>
+            <h4 class="en-only">Industry-grounded delivery</h4>
+            <p class="fr-only">Exemples et livrables calqués sur la réalité client : APIs REST, qualité de dépôt GitHub, déploiement, maintenabilité. Le module relie la POO Python et Cassandra aux contraintes de <strong>livraison</strong> — pas seulement à des notebooks isolés.</p>
+            <p class="en-only">Examples and deliverables mirror client reality: REST APIs, GitHub repo quality, deployment, maintainability. The module connects Python OOP and Cassandra to <strong>shipping</strong> constraints — not isolated notebooks alone.</p>
+          </article>
+          <article class="ped-block">
+            <h4 class="fr-only">Parcours adaptatif</h4>
+            <h4 class="en-only">Adaptive learner paths</h4>
+            <p class="fr-only">Conçu pour des <strong>cohortes mixtes</strong> (ingénieurs, analystes, reconversion). Diagnostic d'entrée, parcours modulaires par séquence, études de cas et boucles de feedback — avec coordination possible avec d'autres intervenants (Kedge, SUPINFO, NEXA, Institut Saint Aspais).</p>
+            <p class="en-only">Built for <strong>mixed cohorts</strong> (engineers, analysts, upskilling professionals). Entry diagnostics, modular paths per sequence, case studies, and feedback loops — with room to coordinate alongside other faculty (Kedge, SUPINFO, NEXA, Institut Saint Aspais).</p>
+          </article>
+          <article class="ped-block wide">
+            <h4 class="fr-only">Évaluation — ce qui est noté</h4>
+            <h4 class="en-only">Assessment — what counts</h4>
+            <ul class="fr-only">
+              <li><strong>Qualité des questions</strong> — originalité et profondeur technique sous scrutiny oral.</li>
+              <li><strong>Profondeur des réponses</strong> — exactitude, honnêteté et raisonnement face aux objections.</li>
+              <li><strong>Livrables techniques</strong> — QCM par séquence, lab Cassandra, projet d'expertise (API + données + dépôt GitHub documenté).</li>
+            </ul>
+            <ul class="en-only">
+              <li><strong>Quality of questions</strong> — originality and technical depth under oral scrutiny.</li>
+              <li><strong>Depth of answers</strong> — accuracy, honesty, and reasoning when challenged.</li>
+              <li><strong>Technical deliverables</strong> — MCQs per sequence, Cassandra lab, capstone (API + data + documented GitHub repo).</li>
+            </ul>
           </article>
         </div>
       </div>
