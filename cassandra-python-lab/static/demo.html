@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cassandra + Fetch — Démo TP</title>
+  <style>
+    body{font-family:system-ui,sans-serif;max-width:720px;margin:2rem auto;padding:0 1rem;line-height:1.5}
+    button{padding:.5rem 1rem;margin-right:.5rem;cursor:pointer}
+    pre{background:#0f1a14;color:#d5e8de;padding:1rem;border-radius:8px;overflow:auto;font-size:.85rem}
+    .err{color:#b91c1c}
+  </style>
+</head>
+<body>
+  <h1>Démo Ajax / Fetch → API REST → Cassandra</h1>
+  <p>TP séquence 2–3 · Lancez <code>uvicorn api_fastapi:app --reload</code> puis :</p>
+  <button id="load">Charger événements (GET)</button>
+  <button id="post">Créer événement (POST)</button>
+  <pre id="out">—</pre>
+  <script>
+    const device = 'sensor-paris-01';
+    const day = '2026-05-20';
+    const out = document.getElementById('out');
+
+    document.getElementById('load').onclick = async () => {
+      out.textContent = 'Chargement…';
+      try {
+        const r = await fetch(`/events/${device}/${day}`);
+        const data = await r.json();
+        out.textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        out.innerHTML = '<span class="err">' + e + '</span>';
+      }
+    };
+
+    document.getElementById('post').onclick = async () => {
+      out.textContent = 'Envoi…';
+      try {
+        const r = await fetch('/events', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            device_id: device,
+            event_date: day,
+            metric: 'humidity',
+            value: 58 + Math.random() * 5,
+            payload: '{"source":"demo.html"}'
+          })
+        });
+        const data = await r.json();
+        out.textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        out.innerHTML = '<span class="err">' + e + '</span>';
+      }
+    };
+  </script>
+</body>
+</html>

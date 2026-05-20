@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dhiya Lecheheb — Portfolio cours | Python avancé &amp; Cassandra (35 h)</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&family=Syne:wght@600;700;800&display=swap');
+:root{
+  --bg:#060d0a;--surface:#0f1a14;--surface2:#14261c;--txt:#f8fafc;--muted:#a3b8ad;--dim:#6b8578;
+  --line:rgba(255,255,255,.1);--emerald:#34d399;--cyan:#38bdf8;--violet:#a855f7;--amber:#fbbf24;
+  --radius:18px;--shadow:0 24px 80px rgba(0,0,0,.38);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:var(--bg);color-scheme:dark}
+body{
+  min-height:100vh;font-family:"DM Sans",system-ui,sans-serif;color:var(--txt);line-height:1.65;
+  background:
+    radial-gradient(900px 520px at 12% -8%, rgba(52,211,153,.2), transparent 62%),
+    radial-gradient(700px 480px at 100% 8%, rgba(56,189,248,.14), transparent 58%),
+    linear-gradient(145deg,#060d0a 0%,#0a1210 50%,#060d0a 100%);
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.32;
+  background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+  background-size:56px 56px;mask-image:linear-gradient(to bottom,black,transparent 88%);
+}
+a{color:var(--emerald)}a:hover{text-decoration:underline}
+.page{position:relative;z-index:1}
+.wrap{max-width:1180px;margin:0 auto;padding:0 1.3rem}
+header{position:sticky;top:0;z-index:20;border-bottom:1px solid var(--line);background:rgba(6,13,10,.82);backdrop-filter:blur(18px)}
+.nav{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:.5rem 0}
+.brand{font-family:"Space Mono",monospace;font-size:.7rem;color:var(--muted)}
+.brand strong{color:var(--txt)}
+.links,.lang-sw{display:flex;gap:.4rem;flex-wrap:wrap;align-items:center}
+.links a,.lang-sw button{
+  display:inline-flex;align-items:center;min-height:34px;padding:.35rem .72rem;border:1px solid var(--line);
+  border-radius:999px;color:var(--muted);font-size:.66rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  background:rgba(15,26,20,.6);cursor:pointer;font-family:inherit;
+}
+.links a:hover{border-color:rgba(52,211,153,.45);background:rgba(52,211,153,.1);color:var(--txt);text-decoration:none}
+.lang-sw button.active{border-color:rgba(52,211,153,.5);color:var(--emerald);background:rgba(52,211,153,.12)}
+.hero{padding:4.5rem 0 3rem}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:.5rem;padding:.4rem .85rem;border:1px solid rgba(52,211,153,.3);
+  border-radius:999px;color:var(--emerald);background:rgba(52,211,153,.08);
+  font-family:"Space Mono",monospace;font-size:.66rem;letter-spacing:.11em;text-transform:uppercase;
+}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);gap:2rem;align-items:end;margin-top:1rem}
+h1,h2,h3{font-family:"Syne",system-ui,sans-serif;letter-spacing:-.04em;line-height:1.06}
+h1{font-size:clamp(2.2rem,5.5vw,4.6rem)}
+.grad{background:linear-gradient(90deg,var(--emerald),var(--cyan) 45%,var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{margin-top:1rem;max-width:720px;color:#d5e8de;font-size:1.08rem}
+.hero-card{border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(145deg,rgba(15,26,20,.9),rgba(20,38,28,.72));padding:1.2rem;box-shadow:var(--shadow)}
+.hero-card h2{font-size:1.2rem;margin-bottom:.7rem}
+.meta{display:flex;justify-content:space-between;gap:1rem;padding:.65rem .75rem;border:1px solid rgba(255,255,255,.07);border-radius:12px;background:rgba(255,255,255,.03);margin-bottom:.55rem;font-size:.88rem}
+.meta span:first-child{color:var(--muted)}
+.meta span:last-child{font-weight:700;text-align:right}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem;margin-top:1.4rem}
+.cta-row{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1.25rem}
+.cta-btn{
+  display:inline-flex;align-items:center;min-height:42px;padding:.65rem 1.1rem;border-radius:999px;
+  border:1px solid rgba(52,211,153,.4);color:var(--txt);font-weight:700;font-size:.88rem;
+  background:linear-gradient(135deg,rgba(52,211,153,.18),rgba(56,189,248,.1));text-decoration:none;
+}
+.cta-btn:hover{border-color:var(--emerald);text-decoration:none}
+.cta-btn.secondary{border-color:var(--line);background:rgba(255,255,255,.04);color:var(--muted);font-weight:600}
+.stat{border:1px solid var(--line);border-radius:var(--radius);padding:.9rem;text-align:center;background:rgba(15,26,20,.65)}
+.stat b{display:block;font-family:"Syne",sans-serif;font-size:1.75rem;color:var(--emerald)}
+.stat span{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+section{padding:3rem 0;border-top:1px solid rgba(255,255,255,.06)}
+.section-head{display:flex;justify-content:space-between;gap:1rem;align-items:end;margin-bottom:1.2rem;flex-wrap:wrap}
+.section-head h2{font-size:clamp(1.7rem,3vw,2.8rem)}
+.section-head p{max-width:520px;color:var(--muted);font-size:.95rem}
+.grid{display:grid;gap:1rem}
+.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.card{
+  border:1px solid var(--line);border-radius:var(--radius);
+  background:linear-gradient(150deg,rgba(15,26,20,.92),rgba(20,38,28,.7));padding:1.1rem;position:relative;overflow:hidden;
+}
+.card::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,var(--emerald),var(--cyan),var(--violet))}
+.card h3{font-size:1.1rem;margin-bottom:.45rem}
+.card p,.card li{color:var(--muted);font-size:.92rem}
+.card ul{padding-left:1.1rem;display:grid;gap:.32rem}
+.pill-row{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.7rem}
+.pill{
+  border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:.3rem .58rem;
+  font-family:"Space Mono",monospace;font-size:.64rem;color:#d5e8de;background:rgba(255,255,255,.04);
+}
+.seq{border-left:3px solid var(--emerald);padding-left:1rem;margin-bottom:1.5rem}
+.seq h3{font-size:1.35rem;margin-bottom:.35rem}
+.seq .sub{color:var(--dim);font-family:"Space Mono",monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.75rem}
+.pages{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.65rem}
+.page-item{
+  border:1px solid var(--line);border-radius:12px;padding:.75rem .85rem;background:rgba(0,0,0,.15);
+  display:grid;grid-template-columns:36px 1fr;gap:.65rem;align-items:start;
+}
+.page-num{
+  font-family:"Space Mono",monospace;font-size:.7rem;font-weight:700;color:var(--emerald);
+  background:rgba(52,211,153,.12);border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+}
+.page-item strong{display:block;font-size:.88rem;color:var(--txt);margin-bottom:.15rem}
+.page-item span{font-size:.8rem;color:var(--muted);line-height:1.45}
+.qcm{border:1px dashed rgba(52,211,153,.35);border-radius:14px;padding:1rem;margin-top:.85rem;background:rgba(52,211,153,.05)}
+.qcm h4{font-size:.95rem;margin-bottom:.5rem;color:var(--emerald)}
+.qcm ol{padding-left:1.2rem;color:var(--muted);font-size:.88rem;display:grid;gap:.35rem}
+.repo-card h3 a{color:var(--txt);text-decoration:none}
+.repo-card h3 a:hover{color:var(--emerald)}
+.repo-links{font-family:"Space Mono",monospace;font-size:.72rem;margin-top:.5rem;word-break:break-all}
+.ref-list{display:grid;gap:.5rem}
+.ref-list a{font-size:.88rem}
+.en-review{
+  margin-top:.65rem;padding:.65rem .8rem;border-radius:10px;border-left:3px solid var(--cyan);
+  background:rgba(56,189,248,.06);font-size:.84rem;color:var(--muted);
+}
+.en-review b{color:var(--cyan);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:.25rem}
+body[data-lang="en"] .fr-only{display:none!important}
+body[data-lang="fr"] .en-only{display:none!important}
+body[data-lang="en"] .en-review{display:none}
+.about-dhiya{margin-bottom:1.5rem}
+.about-dhiya-h{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
+.about-dhiya-h h3{font-size:1.35rem}
+.about-dhiya-h .tag{font-family:"Space Mono",monospace;font-size:.62rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em}
+.about-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.85rem;margin-bottom:1rem}
+.about-card{border:1px solid var(--line);border-radius:var(--radius);padding:1rem 1.1rem;background:rgba(15,26,20,.75);border-top:3px solid var(--emerald)}
+.about-card.ac-cyan{border-top-color:var(--cyan)}
+.about-card.ac-violet{border-top-color:var(--violet)}
+.about-card.ac-amber{border-top-color:var(--amber)}
+.about-k{font-family:"Space Mono",monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--emerald);margin-bottom:.45rem;display:block}
+.about-card p{font-size:.88rem;color:var(--muted);line-height:1.6}
+.about-card p strong{color:var(--txt)}
+.career-tl{border:1px solid var(--line);border-radius:var(--radius);padding:1rem 1.1rem;background:rgba(15,26,20,.6);overflow-x:auto}
+.career-tl-h{font-family:"Space Mono",monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:.75rem}
+.ctl-row{display:flex;align-items:stretch;gap:0;min-width:min(100%,620px)}
+.ctl-step{flex:1;min-width:0;padding:0 .65rem 0 .85rem;border-left:1px solid var(--line)}
+.ctl-step:first-child{padding-left:0;border-left:0}
+.ctl-y{font-family:"Space Mono",monospace;font-size:.68rem;color:var(--amber);margin-bottom:.25rem}
+.ctl-t{font-size:.8rem;color:var(--muted);line-height:1.5}
+.ctl-t strong{color:var(--txt)}
+.panel{border:1px solid var(--line);border-radius:var(--radius);padding:1.1rem 1.2rem;background:rgba(15,26,20,.72)}
+.panel h3{font-size:1.05rem;margin-bottom:.55rem}
+.panel p,.panel li{font-size:.88rem;color:var(--muted)}
+.panel ul{margin:.4rem 0 .4rem 1.1rem;display:grid;gap:.3rem}
+.panel .sub{font-family:"Space Mono",monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:.65rem 0 .35rem}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.45rem}
+.chip{font-family:"Space Mono",monospace;font-size:.6rem;padding:.22rem .48rem;border-radius:6px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--muted)}
+.exp-grid{display:grid;gap:.75rem}
+.exp-item{border-left:3px solid rgba(52,211,153,.45);padding-left:.85rem}
+.exp-item .when{font-family:"Space Mono",monospace;font-size:.62rem;color:var(--emerald);margin-bottom:.2rem}
+.exp-item .title{font-weight:700;color:var(--txt);font-size:.9rem;margin-bottom:.2rem}
+.exp-item p{font-size:.85rem;color:var(--muted);line-height:1.55}
+.about-mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.65rem;margin-bottom:1.2rem}
+.about-mini .mini{border:1px solid var(--line);border-radius:12px;padding:.7rem .8rem;background:rgba(15,26,20,.55)}
+.about-mini .lbl{font-family:"Space Mono",monospace;font-size:.55rem;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:.2rem}
+.about-mini .val{font-size:.82rem;color:var(--muted)}
+.about-mini .val strong{color:var(--txt)}
+.lab-feature{
+  border:1px solid rgba(52,211,153,.35);border-radius:var(--radius);padding:1.2rem 1.3rem;margin-bottom:1.2rem;
+  background:linear-gradient(135deg,rgba(52,211,153,.1),rgba(15,26,20,.85));box-shadow:0 12px 40px rgba(0,0,0,.25);
+}
+.lab-feature h3{font-size:1.2rem;margin-bottom:.5rem}
+.lab-feature .lead-lab{color:var(--muted);font-size:.92rem;margin-bottom:1rem;max-width:780px}
+.file-list{display:flex;flex-wrap:wrap;gap:.4rem;margin:.75rem 0 1rem}
+.file-list span{
+  font-family:"Space Mono",monospace;font-size:.64rem;padding:.28rem .55rem;border-radius:8px;
+  border:1px solid rgba(52,211,153,.25);background:rgba(52,211,153,.08);color:#d5e8de;
+}
+.code-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:.75rem}
+.code-block{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:rgba(0,0,0,.25)}
+.code-block .cap{
+  font-family:"Space Mono",monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:.45rem .7rem;background:rgba(52,211,153,.12);color:var(--emerald);border-bottom:1px solid var(--line);
+}
+.code-block pre{margin:0;padding:.75rem .85rem;font-family:"Space Mono",monospace;font-size:.68rem;line-height:1.5;color:#c8e6d4;overflow-x:auto}
+.prog-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);margin-top:1rem}
+.prog-table{width:100%;border-collapse:collapse;font-size:.86rem}
+.prog-table th,.prog-table td{padding:.65rem .8rem;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.prog-table th{font-family:"Space Mono",monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;color:var(--emerald);background:rgba(52,211,153,.08)}
+.prog-table td{color:var(--muted)}
+.prog-table td:first-child{color:var(--txt);font-weight:600;white-space:nowrap}
+.prog-table tr:last-child td{border-bottom:0}
+.mcq-sample{border:1px dashed rgba(52,211,153,.3);border-radius:12px;padding:1rem;margin-top:1rem;background:rgba(0,0,0,.12)}
+.mcq-sample h4{font-size:.95rem;color:var(--emerald);margin-bottom:.5rem}
+.mcq-sample ol{padding-left:1.2rem;color:var(--muted);font-size:.85rem;display:grid;gap:.4rem}
+footer{border-top:1px solid var(--line);padding:2rem 0 3rem;color:var(--dim);font-size:.88rem}
+@media(max-width:860px){
+  .hero-grid,.grid.three,.grid.two,.stats,.about-grid{grid-template-columns:1fr}
+  .section-head{display:block}
+  .ctl-row{flex-direction:column;min-width:0}
+  .ctl-step{border-left:3px solid var(--line);padding-left:.85rem;margin-left:.1rem}
+  .ctl-step:first-child{border-left-width:0;padding-left:0;margin-left:0}
+}
+</style>
+</head>
+<body data-lang="fr">
+<div class="page">
+  <header>
+    <div class="wrap nav">
+      <div class="brand">// <strong>DHIYA LECHEHEB</strong> · IAWARE · Portfolio cours · 2026</div>
+      <div class="lang-sw" role="group" aria-label="Language">
+        <button type="button" class="active" data-set-lang="fr">FR</button>
+        <button type="button" data-set-lang="en">EN review</button>
+      </div>
+      <nav class="links" aria-label="Sections">
+        <a href="#about-dhiya" class="fr-only">À propos</a>
+        <a href="#about-dhiya" class="en-only">About</a>
+        <a href="#programme" class="fr-only">Programme</a>
+        <a href="#programme" class="en-only">Syllabus</a>
+        <a href="#structure" class="fr-only">Structure</a>
+        <a href="#structure" class="en-only">Structure</a>
+        <a href="#sequences">Séquences</a>
+        <a href="#cassandra-lab">Cassandra</a>
+        <a href="#github">GitHub</a>
+        <a href="#projet">Projet</a>
+        <a href="Teaching-Portfolio-Landing.html" class="fr-only">Portfolio</a>
+        <a href="Teaching-Portfolio-Landing.html" class="en-only">Portfolio</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <div class="eyebrow fr-only">Programmation Web et/ou Scientifique · 35 h</div>
+        <div class="eyebrow en-only">Web &amp; Scientific Programming · 35 h</div>
+        <div class="hero-grid">
+          <div>
+            <h1 class="fr-only">Python avancé &amp; <span class="grad">Cassandra</span></h1>
+            <h1 class="en-only">Advanced Python &amp; <span class="grad">Cassandra</span></h1>
+            <p class="lead fr-only">
+              Module complet pour étudiants : Python orienté objet, frameworks web (Flask, Django, FastAPI),
+              bases NoSQL Cassandra (CQL), APIs REST &amp; CRUD, bases de la data science, programmation asynchrone —
+              avec préparation à une <strong>certification PYTHON</strong> et un <strong>projet d'expertise évalué</strong>.
+            </p>
+            <p class="lead en-only">
+              Full teaching module: OOP Python, web frameworks (Flask, Django, FastAPI), Cassandra NoSQL (CQL),
+              REST APIs &amp; CRUD, data science foundations, async web — plus <strong>Python certification prep</strong>
+              and one <strong>evaluated expert project</strong>.
+            </p>
+            <div class="stats">
+              <div class="stat"><b>3</b><span class="fr-only">Séquences</span><span class="en-only">Sequences</span></div>
+              <div class="stat"><b>36</b><span class="fr-only">Pages (~12 / séq.)</span><span class="en-only">Pages (~12 each)</span></div>
+              <div class="stat"><b>9</b><span class="fr-only">QCM (3 / séq.)</span><span class="en-only">MCQs (3 / seq.)</span></div>
+              <div class="stat"><b>35 h</b><span class="fr-only">Volume</span><span class="en-only">Duration</span></div>
+            </div>
+            <div class="cta-row">
+              <a class="cta-btn fr-only" href="Teaching-Portfolio-Landing.html">Portfolio pédagogique complet →</a>
+              <a class="cta-btn en-only" href="Teaching-Portfolio-Landing.html">Full teaching portfolio →</a>
+              <a class="cta-btn secondary" href="#programme"><span class="fr-only">Programme officiel</span><span class="en-only">Official syllabus</span></a>
+            </div>
+          </div>
+          <aside class="hero-card">
+            <h2 class="fr-only">Fiche cours</h2>
+            <h2 class="en-only">Course sheet</h2>
+            <div class="meta"><span class="fr-only">Intitulé</span><span class="en-only">Title</span><span>Python avancé &amp; Cassandra</span></div>
+            <div class="meta"><span class="fr-only">Format</span><span class="en-only">Format</span><span>Cours + TP + projet</span></div>
+            <div class="meta"><span class="fr-only">Outils</span><span class="en-only">Tools</span><span>Jupyter · PyCharm</span></div>
+            <div class="meta"><span class="fr-only">Frameworks</span><span class="en-only">Frameworks</span><span>Flask · Django · FastAPI</span></div>
+            <div class="meta"><span class="fr-only">Langues</span><span class="en-only">Languages</span><span>FR · EN</span></div>
+            <div class="meta"><span class="fr-only">Portfolio</span><span class="en-only">Portfolio</span><span><a href="Teaching-Portfolio-Landing.html">Teaching portfolio IAWARE</a></span></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="about-dhiya">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="fr-only">À propos de Dhiya Lecheheb</h2>
+          <h2 class="en-only">About Dhiya Lecheheb</h2>
+          <p class="fr-only">Profil enseignant — du terrain client (Python, APIs, data) à la salle de cours.</p>
+          <p class="en-only">Instructor profile — from client delivery (Python, APIs, data) to the classroom.</p>
+        </div>
+
+        <p class="lead fr-only" style="max-width:820px;margin-bottom:1.2rem">
+          <strong>Dhiya Lecheheb</strong> est Data Scientist, Ingénieur IA et professeur associé avec <strong>3+ ans</strong> de conception et livraison de systèmes ML, NLP, LLM et GenAI.
+          Ce module Python/Cassandra s'appuie sur la même exigence que les projets clients : code maintenable, APIs REST, et choix techniques justifiés — pas seulement des notebooks.
+        </p>
+        <p class="lead en-only" style="max-width:820px;margin-bottom:1.2rem">
+          <strong>Dhiya Lecheheb</strong> is a Data Scientist, AI Engineer, and Associate Professor with <strong>3+ years</strong> designing and shipping ML, NLP, LLM, and GenAI systems.
+          This Python/Cassandra module follows the same bar as client work: maintainable code, REST APIs, and justified technical choices — not notebooks alone.
+        </p>
+
+        <div class="about-mini">
+          <div class="mini">
+            <div class="lbl fr-only">Base</div><div class="lbl en-only">Base</div>
+            <div class="val"><strong>Paris</strong> · <span class="fr-only">enseignement &amp; delivery</span><span class="en-only">teaching &amp; delivery</span></div>
+          </div>
+          <div class="mini">
+            <div class="lbl fr-only">Formation</div><div class="lbl en-only">Education</div>
+            <div class="val"><strong class="fr-only">Ingénieur</strong><strong class="en-only">Engineering</strong> (ENP) → <strong>MSc IA &amp; data</strong> (Paris-Cachan)</div>
+          </div>
+          <div class="mini">
+            <div class="lbl fr-only">Trajectoire</div><div class="lbl en-only">Path</div>
+            <div class="val"><span class="fr-only">Recherche NLP/CV → finance DS → <strong>IAWARE</strong></span><span class="en-only">NLP/CV research → finance DS → <strong>IAWARE</strong></span></div>
+          </div>
+          <div class="mini">
+            <div class="lbl fr-only">Langues</div><div class="lbl en-only">Languages</div>
+            <div class="val"><strong>FR</strong> (C2) · <strong>EN</strong></div>
+          </div>
+        </div>
+
+        <div class="about-dhiya">
+          <div class="about-dhiya-h">
+            <h3>Dhiya Lecheheb</h3>
+            <span class="tag fr-only">Parcours · posture · institutions</span>
+            <span class="tag en-only">Background · stance · institutions</span>
+          </div>
+          <div class="about-grid">
+            <article class="about-card">
+              <span class="about-k fr-only">Parcours</span><span class="about-k en-only">Background</span>
+              <p class="fr-only"><strong>Diplôme d'ingénieur</strong> — École Nationale Polytechnique (Alger). <strong>Master IA &amp; science des données</strong> — Paris-Cachan. Associe <strong>systèmes, maths et code Python</strong> aux stacks enseignés ici : POO, web (Flask/Django/FastAPI), data (Pandas) et NoSQL (Cassandra).</p>
+              <p class="en-only"><strong>Engineering degree</strong> — École Nationale Polytechnique (Algiers). <strong>Master in AI &amp; data science</strong> — Paris-Cachan. Connects <strong>systems, maths, and Python</strong> to this course: OOP, web (Flask/Django/FastAPI), data (Pandas), and NoSQL (Cassandra).</p>
+            </article>
+            <article class="about-card ac-cyan">
+              <span class="about-k fr-only">Posture pédagogique</span><span class="about-k en-only">Teaching stance</span>
+              <p class="fr-only">Cours conçus pour <strong>cohortes mixtes</strong> : ingénieurs, analystes, professionnels en reconversion. Au-delà du « ça tourne » : les apprenants doivent <strong>justifier</strong> MVC/CRUD, choix Flask vs Django vs FastAPI, modèle de données Cassandra, et qualité du dépôt GitHub.</p>
+              <p class="en-only">Built for <strong>mixed cohorts</strong>: engineers, analysts, upskilling professionals. Beyond "it runs": learners must <strong>justify</strong> MVC/CRUD, Flask vs Django vs FastAPI, Cassandra data modeling, and GitHub repository quality.</p>
+            </article>
+            <article class="about-card ac-violet">
+              <span class="about-k fr-only">Lien avec les projets IAWARE</span><span class="about-k en-only">IAWARE project link</span>
+              <p class="fr-only">Les TP s'appuient sur des dépôts réels : <strong>Django CRUD</strong> (<a href="https://github.com/Amzil-AI/CRUD" target="_blank" rel="noopener">CRUD</a>), <strong>Cassandra</strong> (<a href="#cassandra-lab">cassandra-python-lab</a>), <strong>FastAPI</strong> (APEN), <strong>Streamlit</strong> (ai-marketing).</p>
+              <p class="en-only">Labs tie to real repos: <strong>Django CRUD</strong> (<a href="https://github.com/Amzil-AI/CRUD" target="_blank" rel="noopener">CRUD</a>), <strong>Cassandra</strong> (<a href="#cassandra-lab">cassandra-python-lab</a>), <strong>FastAPI</strong> (APEN), <strong>Streamlit</strong> (ai-marketing).</p>
+            </article>
+            <article class="about-card ac-amber">
+              <span class="about-k fr-only">Établissements</span><span class="about-k en-only">Institutions</span>
+              <p class="fr-only">Mentorat et enseignement : <strong>Kedge</strong>, <strong>SUPINFO</strong>, <strong>NEXA</strong>, <strong>Institut Saint Aspais</strong> — coordination possible avec d'autres intervenants selon le programme.</p>
+              <p class="en-only">Mentoring &amp; teaching at <strong>Kedge</strong>, <strong>SUPINFO</strong>, <strong>NEXA</strong>, <strong>Institut Saint Aspais</strong> — can coordinate with other faculty as needed.</p>
+            </article>
+          </div>
+
+          <div class="career-tl">
+            <div class="career-tl-h fr-only">Trajectoire — de la recherche à l'IA client</div>
+            <div class="career-tl-h en-only">Career arc — research to client AI</div>
+            <div class="ctl-row">
+              <div class="ctl-step">
+                <div class="ctl-y">2022</div>
+                <div class="ctl-t fr-only"><strong>NLP &amp; CV</strong> — détection de tendances (transformers), analyse du mouvement, pipelines temps réel.</div>
+                <div class="ctl-t en-only"><strong>NLP &amp; CV</strong> — trend detection (transformers), motion analysis, real-time pipelines.</div>
+              </div>
+              <div class="ctl-step">
+                <div class="ctl-y">2023–24</div>
+                <div class="ctl-t fr-only"><strong>Data science finance</strong> (alternance) — RAG, PEFT, classification zero-shot.</div>
+                <div class="ctl-t en-only"><strong>Finance DS</strong> (apprenticeship) — RAG, PEFT, zero-shot classification.</div>
+              </div>
+              <div class="ctl-step">
+                <div class="ctl-y">2024 →</div>
+                <div class="ctl-t fr-only"><strong>IAWARE</strong> — solutions IA sur mesure, enseignement avancé, systèmes <strong>marketing &amp; voix</strong> en production.</div>
+                <div class="ctl-t en-only"><strong>IAWARE</strong> — custom AI delivery, advanced teaching, production <strong>marketing &amp; voice</strong> systems.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid two" style="margin-top:1rem">
+          <div class="panel">
+            <h3 class="fr-only">Formation</h3>
+            <h3 class="en-only">Education</h3>
+            <p><strong class="fr-only">Master IA &amp; science des données</strong><strong class="en-only">Master in AI &amp; Data Science</strong> — Paris-Cachan, France.</p>
+            <p><strong class="fr-only">Diplôme d'ingénieur</strong><strong class="en-only">Engineering degree</strong> — École Nationale Polytechnique (Excellence ST), Alger.</p>
+            <p class="sub fr-only">Stack — aligné au cours</p>
+            <p class="sub en-only">Stack — aligned with this course</p>
+            <div class="chips">
+              <span class="chip">Python</span><span class="chip">Flask</span><span class="chip">Django</span><span class="chip">FastAPI</span>
+              <span class="chip">Cassandra</span><span class="chip">Pandas</span><span class="chip">REST</span><span class="chip">Git</span>
+              <span class="chip">Jupyter</span><span class="chip">Streamlit</span>
+            </div>
+          </div>
+          <div class="panel">
+            <h3>IAWARE — <span class="fr-only">rôle actuel</span><span class="en-only">current role</span></h3>
+            <p><strong class="fr-only">Ingénieur IA (freelance)</strong><strong class="en-only">AI Engineer (freelance)</strong> · Nov 2024 – présent · Paris.</p>
+            <ul>
+              <li class="fr-only"><strong>Solutions IA sur mesure</strong> — web services, APIs, pipelines data.</li>
+              <li class="en-only"><strong>Custom AI solutions</strong> — web services, APIs, data pipelines.</li>
+              <li class="fr-only"><strong>Enseignement</strong> — Python avancé, web, data science, déploiement.</li>
+              <li class="en-only"><strong>Teaching</strong> — advanced Python, web, data science, deployment.</li>
+              <li class="fr-only"><strong>Mentorat</strong> — Kedge, NEXA, SUPINFO ; portfolios &amp; employabilité.</li>
+              <li class="en-only"><strong>Mentoring</strong> — Kedge, NEXA, SUPINFO; portfolios &amp; employability.</li>
+            </ul>
+            <p style="margin-top:.65rem;font-size:.85rem">
+              <span class="fr-only">GitHub : </span><span class="en-only">GitHub: </span>
+              <a href="https://github.com/Amzil-AI" target="_blank" rel="noopener">github.com/Amzil-AI</a>
+              <span class="fr-only"> (migration org IAWARE en cours)</span>
+              <span class="en-only"> (IAWARE org migration in progress)</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:1rem">
+          <h3 class="fr-only">Expérience professionnelle (sélection)</h3>
+          <h3 class="en-only">Professional experience (selected)</h3>
+          <div class="exp-grid">
+            <div class="exp-item">
+              <div class="when">Nov 2024 – <span class="fr-only">présent</span><span class="en-only">present</span></div>
+              <div class="title">AI Engineer — IAWARE, Paris</div>
+              <p class="fr-only">Solutions IA ; enseignement Python/web/data ; mentorat Kedge, NEXA, SUPINFO.</p>
+              <p class="en-only">AI solutions; Python/web/data teaching; mentoring at Kedge, NEXA, SUPINFO.</p>
+            </div>
+            <div class="exp-item">
+              <div class="when">Sep 2023 – Sep 2024</div>
+              <div class="title">Data Scientist — Software Club, Paris</div>
+              <p class="fr-only">IA finance &amp; investissement ; RAG ; PEFT ; classification zero-shot.</p>
+              <p class="en-only">AI in investment &amp; finance; RAG; PEFT; zero-shot classification.</p>
+            </div>
+            <div class="exp-item">
+              <div class="when">Oct 2022 – Apr 2023</div>
+              <div class="title">AI Research Scientist — My Team, Paris</div>
+              <p class="fr-only">Analyse Laban ; DTW (~90 % précision) ; DL temps réel TensorFlow/OpenCV.</p>
+              <p class="en-only">Laban motion analysis; DTW (~90% accuracy); real-time DL with TensorFlow/OpenCV.</p>
+            </div>
+            <div class="exp-item">
+              <div class="when">May 2022 – Oct 2022</div>
+              <div class="title">NLP Data Scientist — Consult-Trend, Nice</div>
+              <p class="fr-only">Tendances mode ; transformers spaCy ; web scraping.</p>
+              <p class="en-only">Fashion trends; spaCy transformers; web scraping.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid three" style="margin-top:1rem">
+          <article class="card">
+            <h3 class="fr-only">Adéquation au cours</h3>
+            <h3 class="en-only">Course fit</h3>
+            <p class="fr-only">Expérience directe en <strong>Python production</strong>, APIs REST, et livrables GitHub — alignée sur les 3 séquences et le projet d'expertise.</p>
+            <p class="en-only">Direct <strong>production Python</strong>, REST APIs, and GitHub deliverables — aligned with all 3 sequences and the capstone.</p>
+          </article>
+          <article class="card">
+            <h3 class="fr-only">Clients (enseignement par l'exemple)</h3>
+            <h3 class="en-only">Clients (teach by example)</h3>
+            <p>Kedge · Ciselure / DigiObs · APEN · SUPINFO · NEXA · <span class="fr-only">Institut Saint Aspais</span><span class="en-only">Institut Saint Aspais</span></p>
+          </article>
+          <article class="card">
+            <h3 class="fr-only">Autres portfolios cours</h3>
+            <h3 class="en-only">Other course portfolios</h3>
+            <p>
+              <a href="Teaching-Portfolio-Landing.html"><strong class="fr-only">Portfolio pédagogique principal</strong><strong class="en-only">Main teaching portfolio</strong></a>
+              <span class="fr-only"> · </span><span class="en-only"> · </span>
+              <a href="Dhiya-Lecheheb-Teaching-Portfolio-Deployment-ML-2026.html">ML Deployment</a>
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="programme">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="fr-only">Programme officiel (35 h)</h2>
+          <h2 class="en-only">Official syllabus (35 h)</h2>
+          <p class="fr-only">Aligné sur le cahier des charges client — Programmation Web et/ou Scientifique : Python avancé et Cassandra.</p>
+          <p class="en-only">Aligned with client specification — Advanced Python &amp; Cassandra (35 h).</p>
+        </div>
+        <div class="prog-wrap">
+          <table class="prog-table">
+            <thead>
+              <tr>
+                <th><span class="fr-only">Bloc</span><span class="en-only">Block</span></th>
+                <th><span class="fr-only">Contenu officiel</span><span class="en-only">Official content</span></th>
+                <th><span class="fr-only">Séquence</span><span class="en-only">Sequence</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="fr-only">Langage Python</span><span class="en-only">Python language</span></td>
+                <td><span class="fr-only">Python objet · ORM &amp; ODM · XML &amp; JSON · Pandas · Folium · async · cURL · Jupyter · PyCharm · certification PYTHON</span><span class="en-only">OOP · ORM &amp; ODM · XML &amp; JSON · Pandas · Folium · async · cURL · Jupyter · PyCharm · Python certification</span></td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td><span class="fr-only">Web &amp; CRUD</span><span class="en-only">Web &amp; CRUD</span></td>
+                <td><span class="fr-only">CRUD · MVC · Flask · Django · REST · Ajax &amp; Fetch · cURL</span><span class="en-only">CRUD · MVC · Flask · Django · REST · Ajax &amp; Fetch · cURL</span></td>
+                <td>2</td>
+              </tr>
+              <tr>
+                <td>Cassandra</td>
+                <td><span class="fr-only">BDD orientée colonnes · CQL · scripts clustering · Python ↔ Cassandra</span><span class="en-only">Column-oriented DB · CQL · clustering scripts · Python ↔ Cassandra</span></td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td><span class="fr-only">Data sciences</span><span class="en-only">Data science</span></td>
+                <td><span class="fr-only">Pipeline data · Pandas · visualisation · Jupyter</span><span class="en-only">Data pipeline · Pandas · visualization · Jupyter</span></td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td><span class="fr-only">Projet évalué</span><span class="en-only">Graded project</span></td>
+                <td><span class="fr-only"><strong>Projet Python</strong> : web service REST <em>ou</em> site CRUD MVC <em>ou</em> data sciences</span><span class="en-only"><strong>Python project</strong>: REST service <em>or</em> CRUD MVC <em>or</em> data science</span></td>
+                <td><span class="fr-only">Final</span><span class="en-only">Final</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="fr-only" style="margin-top:.85rem;color:var(--muted);font-size:.88rem">
+          Livrables : 3 séquences × ~12 pages · 3 QCM / séquence · lab <a href="#cassandra-lab">cassandra-python-lab</a> (CQL + cluster + API REST).
+        </p>
+        <p class="en-only" style="margin-top:.85rem;color:var(--muted);font-size:.88rem">
+          Deliverables: 3 sequences × ~12 pages · 3 MCQs / sequence · <a href="#cassandra-lab">cassandra-python-lab</a> (CQL + cluster + REST API).
+        </p>
+      </div>
+    </section>
+
+    <section id="structure">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="fr-only">Architecture du module</h2>
+          <h2 class="en-only">Module architecture</h2>
+          <p class="fr-only">Trois séquences pédagogiques, chacune ~12 pages, trois QCM par séquence, puis un projet final noté.</p>
+          <p class="en-only">Three learning sequences (~12 pages each), three MCQs per sequence, then one graded capstone.</p>
+        </div>
+        <div class="grid three">
+          <article class="card">
+            <h3 class="fr-only">Séquence 1 — Python &amp; POO</h3>
+            <h3 class="en-only">Sequence 1 — Python &amp; OOP</h3>
+            <p class="fr-only">Langage Python, objet, ORM/ODM, XML/JSON, Pandas, Folium, async (intro), cURL, certification.</p>
+            <p class="en-only">Python language, OOP, ORM/ODM, XML/JSON, Pandas, Folium, async intro, cURL, certification prep.</p>
+            <div class="pill-row"><span class="pill">Python</span><span class="pill">POO</span><span class="pill">Pandas</span><span class="pill">Jupyter</span></div>
+          </article>
+          <article class="card">
+            <h3 class="fr-only">Séquence 2 — Web &amp; CRUD</h3>
+            <h3 class="en-only">Sequence 2 — Web &amp; CRUD</h3>
+            <p class="fr-only">MVC, CRUD, Flask, Django, REST, Ajax/Fetch, déploiement — avec dépôts GitHub production.</p>
+            <p class="en-only">MVC, CRUD, Flask, Django, REST, Ajax/Fetch, deployment — backed by production GitHub repos.</p>
+            <div class="pill-row"><span class="pill">Flask</span><span class="pill">Django</span><span class="pill">FastAPI</span><span class="pill">REST</span></div>
+          </article>
+          <article class="card">
+            <h3 class="fr-only">Séquence 3 — Cassandra &amp; Data</h3>
+            <h3 class="en-only">Sequence 3 — Cassandra &amp; Data</h3>
+            <p class="fr-only">Base orientée colonnes, CQL, scripts de clustering, data science (Pandas, visualisation).</p>
+            <p class="en-only">Column-oriented DB, CQL, clustering scripts, data science (Pandas, visualization).</p>
+            <div class="pill-row"><span class="pill">Cassandra</span><span class="pill">CQL</span><span class="pill">Folium</span><span class="pill">Data</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="sequences">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="fr-only">Les 3 séquences — détail des pages</h2>
+          <h2 class="en-only">3 sequences — page outline</h2>
+        </div>
+
+        <div class="seq" id="seq1">
+          <h3 class="fr-only">Séquence 1 · Python avancé (12 pages)</h3>
+          <h3 class="en-only">Sequence 1 · Advanced Python (12 pages)</h3>
+          <p class="sub fr-only">~12 h · Fondations langage &amp; scientifique</p>
+          <p class="sub en-only">~12 h · Language &amp; scientific foundations</p>
+          <div class="pages">
+            <div class="page-item"><span class="page-num">01</span><div><strong class="fr-only">Environnement &amp; outils</strong><strong class="en-only">Environment &amp; tools</strong><span class="fr-only">Jupyter, PyCharm, venv, pip, structure de projet.</span><span class="en-only">Jupyter, PyCharm, venv, pip, project layout.</span></div></div>
+            <div class="page-item"><span class="page-num">02</span><div><strong class="fr-only">Syntaxe &amp; types</strong><strong class="en-only">Syntax &amp; types</strong><span class="fr-only">Types, collections, compréhensions, gestion d'erreurs.</span><span class="en-only">Types, collections, comprehensions, error handling.</span></div></div>
+            <div class="page-item"><span class="page-num">03</span><div><strong>Python objet (POO)</strong><span class="fr-only">Classes, héritage, encapsulation, polymorphisme, dataclasses.</span><span class="en-only">Classes, inheritance, encapsulation, polymorphism, dataclasses.</span></div></div>
+            <div class="page-item"><span class="page-num">04</span><div><strong>ORM &amp; ODM</strong><span class="fr-only">SQLAlchemy/Django ORM vs drivers NoSQL — pont vers Cassandra.</span><span class="en-only">SQLAlchemy/Django ORM vs NoSQL drivers — bridge to Cassandra.</span></div></div>
+            <div class="page-item"><span class="page-num">05</span><div><strong>XML &amp; JSON</strong><span class="fr-only">Parsing, sérialisation, APIs, validation de schémas.</span><span class="en-only">Parsing, serialization, APIs, schema validation.</span></div></div>
+            <div class="page-item"><span class="page-num">06</span><div><strong>Pandas</strong><span class="fr-only">DataFrames, agrégations, nettoyage, export CSV/JSON.</span><span class="en-only">DataFrames, aggregations, cleaning, CSV/JSON export.</span></div></div>
+            <div class="page-item"><span class="page-num">07</span><div><strong>Folium</strong><span class="fr-only">Cartes interactives, géovisualisation pour projets data.</span><span class="en-only">Interactive maps, geoviz for data projects.</span></div></div>
+            <div class="page-item"><span class="page-num">08</span><div><strong class="fr-only">Async (bases)</strong><strong class="en-only">Async (basics)</strong><span class="fr-only">async/await, coroutines — prérequis Ajax/Fetch (séq. 2).</span><span class="en-only">async/await, coroutines — prep for Ajax/Fetch (seq. 2).</span></div></div>
+            <div class="page-item"><span class="page-num">09</span><div><strong>cURL &amp; clients HTTP</strong><span class="fr-only">Requêtes REST en ligne de commande, headers, auth.</span><span class="en-only">REST from CLI, headers, authentication.</span></div></div>
+            <div class="page-item"><span class="page-num">10</span><div><strong class="fr-only">Certification PYTHON</strong><strong class="en-only">Python certification prep</strong><span class="fr-only">Révisions ciblées, bonnes pratiques, examens blancs.</span><span class="en-only">Targeted review, best practices, mock exams.</span></div></div>
+            <div class="page-item"><span class="page-num">11</span><div><strong>UML &amp; modélisation</strong><span class="fr-only">Diagrammes de classes, cas d'usage (réf. Coursera UML).</span><span class="en-only">Class diagrams, use cases (Coursera UML ref.).</span></div></div>
+            <div class="page-item"><span class="page-num">12</span><div><strong class="fr-only">Synthèse séquence 1</strong><strong class="en-only">Sequence 1 wrap-up</strong><span class="fr-only">TP noté, checklist compétences, passage séquence 2.</span><span class="en-only">Graded lab, skills checklist, bridge to sequence 2.</span></div></div>
+          </div>
+          <div class="qcm">
+            <h4 class="fr-only">QCM — Séquence 1 (3 questionnaires)</h4>
+            <h4 class="en-only">MCQs — Sequence 1 (3 quizzes)</h4>
+            <ol>
+              <li class="fr-only"><strong>QCM-A POO</strong> — héritage, méthodes spéciales, composition vs héritage.</li>
+              <li class="fr-only"><strong>QCM-B Données</strong> — Pandas, JSON, types et opérations vectorisées.</li>
+              <li class="fr-only"><strong>QCM-C Pratique</strong> — environnement, cURL, bonnes pratiques certification.</li>
+              <li class="en-only"><strong>MCQ-A OOP</strong> — inheritance, dunder methods, composition vs inheritance.</li>
+              <li class="en-only"><strong>MCQ-B Data</strong> — Pandas, JSON, vectorized operations.</li>
+              <li class="en-only"><strong>MCQ-C Practice</strong> — environment, cURL, certification-style questions.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="seq" id="seq2">
+          <h3 class="fr-only">Séquence 2 · Développement web Python (12 pages)</h3>
+          <h3 class="en-only">Sequence 2 · Python web development (12 pages)</h3>
+          <p class="sub fr-only">~12 h · Flask, Django, REST, async front</p>
+          <p class="sub en-only">~12 h · Flask, Django, REST, async front-end</p>
+          <div class="pages">
+            <div class="page-item"><span class="page-num">01</span><div><strong>CRUD &amp; MVC</strong><span class="fr-only">Modèle, vue, contrôleur ; cycle Create-Read-Update-Delete.</span><span class="en-only">Model, view, controller; Create-Read-Update-Delete cycle.</span></div></div>
+            <div class="page-item"><span class="page-num">02</span><div><strong>Flask — fondations</strong><span class="fr-only">Routes, templates Jinja2, formulaires, sessions (lab déploiement ML).</span><span class="en-only">Routes, Jinja2 templates, forms, sessions (ML deployment lab).</span></div></div>
+            <div class="page-item"><span class="page-num">03</span><div><strong>Flask — API &amp; WSGI</strong><span class="fr-only">Endpoints JSON, Gunicorn, déploiement PaaS.</span><span class="en-only">JSON endpoints, Gunicorn, PaaS deployment.</span></div></div>
+            <div class="page-item"><span class="page-num">04</span><div><strong>Django — projet</strong><span class="fr-only">startproject, apps, settings, MTV pattern.</span><span class="en-only">startproject, apps, settings, MTV pattern.</span></div></div>
+            <div class="page-item"><span class="page-num">05</span><div><strong>Django — ORM &amp; admin</strong><span class="fr-only">Modèles, migrations, interface admin, vues génériques.</span><span class="en-only">Models, migrations, admin, class-based views.</span></div></div>
+            <div class="page-item"><span class="page-num">06</span><div><strong>Django — CRUD complet</strong><span class="fr-only">Site web CRUD MVC (projet type expertise).</span><span class="en-only">Full CRUD MVC website (capstone option).</span></div></div>
+            <div class="page-item"><span class="page-num">07</span><div><strong>REST &amp; OpenAPI</strong><span class="fr-only">Verbes HTTP, ressources, codes statut, documentation.</span><span class="en-only">HTTP verbs, resources, status codes, documentation.</span></div></div>
+            <div class="page-item"><span class="page-num">08</span><div><strong>FastAPI — étude de cas</strong><span class="fr-only">Webhooks, ASGI, projet APEN (dépôt GitHub).</span><span class="en-only">Webhooks, ASGI, APEN case study (GitHub repo).</span></div></div>
+            <div class="page-item"><span class="page-num">09</span><div><strong>Ajax &amp; Fetch</strong><span class="fr-only">Programmation asynchrone côté client, SPA légères.</span><span class="en-only">Client-side async, lightweight SPAs.</span></div></div>
+            <div class="page-item"><span class="page-num">10</span><div><strong>Streamlit &amp; UI data</strong><span class="fr-only">Prototypage rapide — dépôt ai-marketing.</span><span class="en-only">Rapid prototyping — ai-marketing repository.</span></div></div>
+            <div class="page-item"><span class="page-num">11</span><div><strong class="fr-only">Intégration BDD</strong><strong class="en-only">Database integration</strong><span class="fr-only">SQL, ORM Django, connexion Cassandra (driver Python).</span><span class="en-only">SQL, Django ORM, Cassandra Python driver.</span></div></div>
+            <div class="page-item"><span class="page-num">12</span><div><strong class="fr-only">TP web noté</strong><strong class="en-only">Graded web lab</strong><span class="fr-only">Mini API REST ou page CRUD Flask/Django.</span><span class="en-only">Mini REST API or Flask/Django CRUD page.</span></div></div>
+          </div>
+          <div class="qcm">
+            <h4 class="fr-only">QCM — Séquence 2 (3 questionnaires)</h4>
+            <h4 class="en-only">MCQs — Sequence 2 (3 quizzes)</h4>
+            <ol>
+              <li class="fr-only"><strong>QCM-D MVC/CRUD</strong> — rôles couche, mapping HTTP, idempotence.</li>
+              <li class="fr-only"><strong>QCM-E Frameworks</strong> — Flask vs Django vs FastAPI (cas d'usage).</li>
+              <li class="fr-only"><strong>QCM-F REST &amp; async</strong> — Fetch, CORS, webhooks, statuts HTTP.</li>
+              <li class="en-only"><strong>MCQ-D MVC/CRUD</strong> — layer roles, HTTP mapping, idempotency.</li>
+              <li class="en-only"><strong>MCQ-E Frameworks</strong> — Flask vs Django vs FastAPI use cases.</li>
+              <li class="en-only"><strong>MCQ-F REST &amp; async</strong> — Fetch, CORS, webhooks, HTTP status.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="seq" id="seq3">
+          <h3 class="fr-only">Séquence 3 · Cassandra &amp; data science (12 pages)</h3>
+          <h3 class="en-only">Sequence 3 · Cassandra &amp; data science (12 pages)</h3>
+          <p class="sub fr-only">~11 h · NoSQL + projet data</p>
+          <p class="sub en-only">~11 h · NoSQL + data project</p>
+          <div class="pages">
+            <div class="page-item"><span class="page-num">01</span><div><strong class="fr-only">SQL vs NoSQL</strong><strong class="en-only">SQL vs NoSQL</strong><span class="fr-only">Modèles relationnel vs orienté colonnes.</span><span class="en-only">Relational vs column-family models.</span></div></div>
+            <div class="page-item"><span class="page-num">02</span><div><strong>Cassandra — architecture</strong><span class="fr-only">Ring, réplication, cohérence, haute disponibilité.</span><span class="en-only">Ring, replication, consistency, high availability.</span></div></div>
+            <div class="page-item"><span class="page-num">03</span><div><strong>CQL — bases</strong><span class="fr-only">CREATE KEYSPACE/TABLE, INSERT, SELECT.</span><span class="en-only">CREATE KEYSPACE/TABLE, INSERT, SELECT.</span></div></div>
+            <div class="page-item"><span class="page-num">04</span><div><strong>CQL — requêtes avancées</strong><span class="fr-only">Filtres, index secondaires, LIMIT, batch.</span><span class="en-only">Filters, secondary indexes, LIMIT, batch.</span></div></div>
+            <div class="page-item"><span class="page-num">05</span><div><strong class="fr-only">Modélisation données</strong><strong class="en-only">Data modeling</strong><span class="fr-only">Requêtes-first, dénormalisation, time-series.</span><span class="en-only">Query-first design, denormalization, time-series.</span></div></div>
+            <div class="page-item"><span class="page-num">06</span><div><strong class="fr-only">Scripts clustering</strong><strong class="en-only">Clustering scripts</strong><span class="fr-only">docker-compose / scripts Python pour nœuds locaux.</span><span class="en-only">docker-compose / Python scripts for local nodes.</span></div></div>
+            <div class="page-item"><span class="page-num">07</span><div><strong class="fr-only">Python ↔ Cassandra</strong><strong class="en-only">Python ↔ Cassandra</strong><span class="fr-only">cassandra-driver, sessions, prepared statements.</span><span class="en-only">cassandra-driver, sessions, prepared statements.</span></div></div>
+            <div class="page-item"><span class="page-num">08</span><div><strong class="fr-only">Pipeline data science</strong><strong class="en-only">Data science pipeline</strong><span class="fr-only">Collecte, EDA, features (réf. playlists ML).</span><span class="en-only">Collection, EDA, features (ML playlist refs).</span></div></div>
+            <div class="page-item"><span class="page-num">09</span><div><strong class="fr-only">Visualisation</strong><strong class="en-only">Visualization</strong><span class="fr-only">matplotlib, seaborn, Folium pour rapports.</span><span class="en-only">matplotlib, seaborn, Folium for reporting.</span></div></div>
+            <div class="page-item"><span class="page-num">10</span><div><strong class="fr-only">Jupyter — projet data</strong><strong class="en-only">Jupyter — data project</strong><span class="fr-only">Notebook reproductible, export résultats.</span><span class="en-only">Reproducible notebook, result export.</span></div></div>
+            <div class="page-item"><span class="page-num">11</span><div><strong class="fr-only">MLOps (introduction)</strong><strong class="en-only">MLOps (intro)</strong><span class="fr-only">Versioning, déploiement — lien parcours Udemy/Coursera.</span><span class="en-only">Versioning, deployment — Udemy/Coursera path.</span></div></div>
+            <div class="page-item"><span class="page-num">12</span><div><strong class="fr-only">Brief projet expertise</strong><strong class="en-only">Capstone brief</strong><span class="fr-only">Choix : REST, CRUD MVC, ou data science.</span><span class="en-only">Choose: REST, CRUD MVC, or data science.</span></div></div>
+          </div>
+          <div class="qcm">
+            <h4 class="fr-only">QCM — Séquence 3 (3 questionnaires)</h4>
+            <h4 class="en-only">MCQs — Sequence 3 (3 quizzes)</h4>
+            <ol>
+              <li class="fr-only"><strong>QCM-G Cassandra</strong> — CQL, modèle colonnes, réplication.</li>
+              <li class="fr-only"><strong>QCM-H Data</strong> — Pandas, visualisation, biais &amp; qualité données.</li>
+              <li class="fr-only"><strong>QCM-I Projet</strong> — critères d'évaluation, architecture, livrables.</li>
+              <li class="en-only"><strong>MCQ-G Cassandra</strong> — CQL, column model, replication.</li>
+              <li class="en-only"><strong>MCQ-H Data</strong> — Pandas, visualization, data quality.</li>
+              <li class="en-only"><strong>MCQ-I Capstone</strong> — grading criteria, architecture, deliverables.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cassandra-lab">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="fr-only">Laboratoire Cassandra — artefact TP</h2>
+          <h2 class="en-only">Cassandra lab — hands-on artifact</h2>
+          <p class="fr-only">Preuve concrète CQL, clustering et Python — livrable prêt pour la séquence 3.</p>
+          <p class="en-only">Concrete CQL, clustering, and Python proof — ready for sequence 3.</p>
+        </div>
+
+        <div class="lab-feature">
+          <h3>cassandra-python-lab</h3>
+          <p class="lead-lab fr-only">
+            Dossier lab complet (docker-compose 3 nœuds, schéma CQL, requêtes, script Python <code>cassandra-driver</code>).
+            Les étudiants reproduisent le cluster local, chargent les données, puis peuvent brancher une API Flask/FastAPI.
+          </p>
+          <p class="lead-lab en-only">
+            Full lab folder (3-node docker-compose, CQL schema, queries, Python <code>cassandra-driver</code> script).
+            Students spin up a local cluster, load data, then optionally wire a Flask/FastAPI API.
+          </p>
+          <div class="file-list" aria-label="Lab files">
+            <span>docker-compose.yml</span>
+            <span>schema.cql</span>
+            <span>queries.cql</span>
+            <span>connect.py</span>
+            <span>api_fastapi.py</span>
+            <span>static/demo.html</span>
+            <span>sample-mcq.md</span>
+            <span>README.md</span>
+          </div>
+          <p class="repo-links" style="margin-bottom:1rem">
+            <span class="fr-only">Dépôt : </span><span class="en-only">Repo: </span>
+            <a href="https://github.com/Amzil-AI/python/tree/main/cassandra-python-lab" target="_blank" rel="noopener"><strong>cassandra-python-lab/</strong></a>
+            · <a href="https://amzil-ai.github.io/python/" target="_blank" rel="noopener">GitHub Pages</a>
+          </p>
+          <div class="code-grid">
+            <div class="code-block">
+              <div class="cap">schema.cql — modèle colonnes</div>
+              <pre>CREATE KEYSPACE iaware_course
+  WITH replication = {
+    'class': 'SimpleStrategy',
+    'replication_factor': 3
+  };
+
+CREATE TABLE events_by_device (
+  device_id text,
+  event_date date,
+  event_time timestamp,
+  metric text,
+  value double,
+  PRIMARY KEY ((device_id, event_date), event_time)
+);</pre>
+            </div>
+            <div class="code-block">
+              <div class="cap">queries.cql — batch &amp; SELECT</div>
+              <pre>BEGIN BATCH
+  INSERT INTO events_by_device (...) VALUES (...);
+  INSERT INTO events_by_device (...) VALUES (...);
+APPLY BATCH;
+
+SELECT event_time, metric, value
+FROM events_by_device
+WHERE device_id = ? AND event_date = ?
+LIMIT 10;</pre>
+            </div>
+            <div class="code-block">
+              <div class="cap">connect.py — Python</div>
+              <pre>from cassandra.cluster import Cluster
+
+cluster = Cluster(["127.0.0.1"], port=9042)
+session = cluster.connect("iaware_course")
+session.execute(insert_stmt, (...))
+rows = session.execute(select_stmt, (...))</pre>
+            </div>
+            <div class="code-block">
+              <div class="cap">api_fastapi.py — REST + Fetch</div>
+              <pre>GET  /events/{device_id}/{date}
+POST /events  → INSERT CQL
+GET  /demo    → page Fetch (Ajax)</pre>
+            </div>
+          </div>
+          <div class="mcq-sample">
+            <h4 class="fr-only">Exemple QCM (extrait — voir sample-mcq.md)</h4>
+            <h4 class="en-only">Sample MCQ (excerpt — see sample-mcq.md)</h4>
+            <ol>
+              <li class="fr-only"><strong>Cassandra :</strong> la partition key sert à… → distribuer les données sur le cluster.</li>
+              <li class="en-only"><strong>Cassandra:</strong> the partition key is used to… → distribute data across the cluster.</li>
+              <li class="fr-only"><strong>FastAPI :</strong> particulièrement adapté pour… → APIs REST async + OpenAPI.</li>
+              <li class="en-only"><strong>FastAPI:</strong> best suited for… → async REST APIs + OpenAPI.</li>
+            </ol>
+          </div>
+          <div class="pill-row" style="margin-top:1rem">
+            <span class="pill">Cassandra 4.1</span>
+            <span class="pill">CQL</span>
+            <span class="pill">3-node cluster</span>
+            <span class="pill">FastAPI</span>
+            <span class="pill">Fetch</span>
+            <span class="pill">CRUD REST</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="github">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="fr-only">Dépôts GitHub — démonstration multi-langages</h2>
+          <h2 class="en-only">GitHub repositories — multi-stack showcase</h2>
+          <p class="fr-only">Projets IAWARE en production (Python web &amp; data) — complément du lab Cassandra ci-dessus.</p>
+          <p class="en-only">IAWARE production projects (Python web &amp; data) — complement to the Cassandra lab above.</p>
+        </div>
+        <div class="grid two">
+          <article class="card repo-card">
+            <h3><a href="https://github.com/Amzil-AI/APEN" target="_blank" rel="noopener">APEN — Agent vocal 24/7</a></h3>
+            <p class="fr-only"><strong>Langage :</strong> Python · <strong>Stack :</strong> FastAPI, webhooks, Whisper, déploiement cloud.</p>
+            <p class="en-only"><strong>Language:</strong> Python · <strong>Stack:</strong> FastAPI, webhooks, Whisper, cloud deploy.</p>
+            <p class="repo-links"><a href="https://github.com/Amzil-AI/APEN">github.com/Amzil-AI/APEN</a></p>
+            <div class="pill-row"><span class="pill">Python</span><span class="pill">FastAPI</span><span class="pill">REST</span><span class="pill">ASGI</span></div>
+          </article>
+          <article class="card repo-card">
+            <h3><a href="https://github.com/Amzil-AI/ai-marketing" target="_blank" rel="noopener">ai-marketing — Plateforme contenu IA</a></h3>
+            <p class="fr-only"><strong>Langage :</strong> Python · <strong>Stack :</strong> Streamlit, LangChain, FAISS, OpenAI, Render.</p>
+            <p class="en-only"><strong>Language:</strong> Python · <strong>Stack:</strong> Streamlit, LangChain, FAISS, OpenAI, Render.</p>
+            <p class="repo-links"><a href="https://github.com/Amzil-AI/ai-marketing">github.com/Amzil-AI/ai-marketing</a> · <a href="https://ai-marketing-630d.onrender.com" target="_blank" rel="noopener">Démo live</a></p>
+            <div class="pill-row"><span class="pill">Python</span><span class="pill">Streamlit</span><span class="pill">RAG</span><span class="pill">JSON</span></div>
+          </article>
+          <article class="card repo-card">
+            <h3><a href="https://github.com/Amzil-AI/Langraph" target="_blank" rel="noopener">Langraph — Agents &amp; graphes</a></h3>
+            <p class="fr-only"><strong>Langage :</strong> Python (Jupyter) · orchestration LangGraph.</p>
+            <p class="en-only"><strong>Language:</strong> Python (Jupyter) · LangGraph orchestration.</p>
+            <p class="repo-links"><a href="https://github.com/Amzil-AI/Langraph">github.com/Amzil-AI/Langraph</a></p>
+            <div class="pill-row"><span class="pill">Python</span><span class="pill">Jupyter</span><span class="pill">LangGraph</span></div>
+          </article>
+          <article class="card repo-card">
+            <h3><a href="https://github.com/Amzil-AI/CRUD" target="_blank" rel="noopener">CRUD — Site Django MVC</a></h3>
+            <p class="fr-only"><strong>Langage :</strong> Python · <strong>Stack :</strong> Django 5, ORM SQLite, templates, admin — projet expertise option B.</p>
+            <p class="en-only"><strong>Language:</strong> Python · <strong>Stack:</strong> Django 5, SQLite ORM, templates, admin — capstone option B.</p>
+            <p class="repo-links"><a href="https://github.com/Amzil-AI/CRUD">github.com/Amzil-AI/CRUD</a> · dossier local <strong>CRUD/</strong></p>
+            <div class="pill-row"><span class="pill">Python</span><span class="pill">Django</span><span class="pill">MVC</span><span class="pill">CRUD</span></div>
+          </article>
+          <article class="card repo-card">
+            <h3 class="fr-only">Flask — Service ML (lab cours)</h3>
+            <h3 class="en-only">Flask — ML service (course lab)</h3>
+            <p class="fr-only">Enseigné dans le module <a href="Dhiya-Lecheheb-Teaching-Portfolio-Deployment-ML-2026.html">Déploiement &amp; maintenance ML</a> : API Flask/WSGI, Gunicorn, PaaS — modèle pour TP séquence 2.</p>
+            <p class="en-only">Taught in <a href="Dhiya-Lecheheb-Teaching-Portfolio-Deployment-ML-2026.html">ML Deployment &amp; Maintenance</a>: Flask/WSGI API, Gunicorn, PaaS — template for sequence 2 labs.</p>
+            <div class="pill-row"><span class="pill">Python</span><span class="pill">Flask</span><span class="pill">WSGI</span><span class="pill">GitHub</span></div>
+          </article>
+          <article class="card repo-card">
+            <h3><a href="https://github.com/Amzil-AI/python" target="_blank" rel="noopener">python — Portfolio cours (Pages)</a></h3>
+            <p class="fr-only"><strong>Langages :</strong> HTML · portfolio Python/Cassandra, hub IAWARE, lab Cassandra.</p>
+            <p class="en-only"><strong>Languages:</strong> HTML · Python/Cassandra portfolio, IAWARE hub, Cassandra lab.</p>
+            <p class="repo-links">
+              <a href="https://github.com/Amzil-AI/python">github.com/Amzil-AI/python</a>
+              · <a href="https://amzil-ai.github.io/python/" target="_blank" rel="noopener">GitHub Pages</a>
+            </p>
+            <div class="pill-row"><span class="pill">HTML</span><span class="pill">GitHub Pages</span><span class="pill">Cassandra lab</span></div>
+          </article>
+          <article class="card repo-card">
+            <h3><a href="https://github.com/Amzil-AI/resources" target="_blank" rel="noopener">resources — Hub pédagogique IA</a></h3>
+            <p class="fr-only"><strong>Langages :</strong> HTML, Python · cheat sheets IA, réseaux de neurones, LangGraph, MCP.</p>
+            <p class="en-only"><strong>Languages:</strong> HTML, Python · AI cheat sheets, neural nets, LangGraph, MCP.</p>
+            <p class="repo-links">
+              <a href="https://github.com/Amzil-AI/resources">github.com/Amzil-AI/resources</a>
+              · <a href="https://amzil-ai.github.io/resources/" target="_blank" rel="noopener">GitHub Pages</a>
+            </p>
+            <div class="pill-row"><span class="pill">HTML</span><span class="pill">Python</span><span class="pill">Teaching</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="projet">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="fr-only">Projet d'expertise évalué — « Projet Python »</h2>
+          <h2 class="en-only">Evaluated expert project — « Python Project »</h2>
+        </div>
+        <div class="grid three">
+          <article class="card">
+            <h3 class="fr-only">Option A — Web service REST</h3>
+            <h3 class="en-only">Option A — REST web service</h3>
+            <p class="fr-only">API FastAPI ou Flask : CRUD, auth basique, doc OpenAPI, tests, README + dépôt GitHub.</p>
+            <p class="en-only">FastAPI or Flask API: CRUD, basic auth, OpenAPI docs, tests, README + GitHub repo.</p>
+            <p class="fr-only" style="margin-top:.5rem"><strong>Réf. :</strong> <a href="https://github.com/Amzil-AI/APEN">APEN</a></p>
+          </article>
+          <article class="card">
+            <h3 class="fr-only">Option B — Site CRUD MVC</h3>
+            <h3 class="en-only">Option B — CRUD MVC website</h3>
+            <p class="fr-only">Application Django (ou Flask) : modèles, vues, templates, formulaires, persistance SQL ou Cassandra.</p>
+            <p class="en-only">Django (or Flask) app: models, views, templates, forms, SQL or Cassandra persistence.</p>
+            <p class="fr-only" style="margin-top:.5rem"><strong>Réf. :</strong> <a href="https://github.com/Amzil-AI/CRUD" target="_blank" rel="noopener">github.com/Amzil-AI/CRUD</a></p>
+            <p class="en-only" style="margin-top:.5rem"><strong>Ref.:</strong> <a href="https://github.com/Amzil-AI/CRUD" target="_blank" rel="noopener">github.com/Amzil-AI/CRUD</a></p>
+          </article>
+          <article class="card">
+            <h3 class="fr-only">Option C — Data sciences</h3>
+            <h3 class="en-only">Option C — Data science</h3>
+            <p class="fr-only">Notebook Jupyter + rapport : Pandas, visualisation, Folium ; option stockage Cassandra.</p>
+            <p class="en-only">Jupyter notebook + report: Pandas, visualization, Folium; optional Cassandra storage.</p>
+            <p class="fr-only" style="margin-top:.5rem"><strong>Réf. :</strong> <a href="#cassandra-lab">cassandra-python-lab</a> + Pandas/Jupyter</p>
+            <p class="en-only" style="margin-top:.5rem"><strong>Ref.:</strong> <a href="#cassandra-lab">cassandra-python-lab</a> + Pandas/Jupyter</p>
+          </article>
+        </div>
+        <article class="card" style="margin-top:1rem">
+          <h3 class="fr-only">Grille d'évaluation</h3>
+          <h3 class="en-only">Grading rubric</h3>
+          <ul>
+            <li class="fr-only"><strong>Code &amp; GitHub (40 %)</strong> — structure, README, requirements, commits clairs.</li>
+            <li class="fr-only"><strong>Fonctionnel (35 %)</strong> — CRUD/REST/data conforme au cahier des charges.</li>
+            <li class="fr-only"><strong>Soutenance (25 %)</strong> — architecture MVC/REST, choix Flask/Django/FastAPI, CQL si Cassandra.</li>
+            <li class="en-only"><strong>Code &amp; GitHub (40%)</strong> — structure, README, requirements, clear commits.</li>
+            <li class="en-only"><strong>Functional (35%)</strong> — CRUD/REST/data meets specification.</li>
+            <li class="en-only"><strong>Defense (25%)</strong> — MVC/REST architecture, framework choice, CQL if Cassandra.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      Dhiya Lecheheb · IAWARE · Programmation Web et/ou Scientifique : Python avancé et Cassandra (35 h) · 2026<br>
+      <span class="fr-only">Cours Python &amp; Cassandra · </span><span class="en-only">Python &amp; Cassandra course · </span>
+      <a href="Teaching-Portfolio-Landing.html"><span class="fr-only">Portfolio pédagogique Dhiya Lecheheb →</span><span class="en-only">Dhiya Lecheheb teaching portfolio →</span></a>
+    </div>
+  </footer>
+</div>
+<script>
+(function(){
+  var body=document.body;
+  document.querySelectorAll('[data-set-lang]').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var lang=btn.getAttribute('data-set-lang');
+      body.setAttribute('data-lang',lang);
+      document.querySelectorAll('[data-set-lang]').forEach(function(b){b.classList.toggle('active',b===btn);});
+      document.documentElement.lang=lang==='en'?'en':'fr';
+    });
+  });
+})();
+</script>
+</body>
+</html>
